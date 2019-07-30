@@ -5,6 +5,8 @@ import ev3dev.auto as ev3
 import threading
 import time
 
+#teste de pull
+
 garra = ev3.MediumMotor(ev3.OUTPUT_B)
 memoria = True
 
