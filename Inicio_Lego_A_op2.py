@@ -16,16 +16,16 @@ do primeiro sensor que achou o preto e ligando o motor do sensor que ainda nao a
 
 '''
 
-m1 = LargeMotor('outD')
-m2 = LargeMotor('outA')
+m1 = LargeMotor('outC')
+m2 = LargeMotor('outD')
 cor = ColorSensor('in4')
 cor2 = ColorSensor('in1')
-us = UltrasonicSensor('in2')
+#us = UltrasonicSensor('in2')
 #us2 = UltrasonicSensor('in3')
 
 cor.mode = 'COL-COLOR'
 cor2.mode = 'COL-COLOR'
-us.mode = 'US-DIST-CM'
+#us.mode = 'US-DIST-CM'
 #us2.mode = 'US-DIST-CM'
 
 def giraRobo(graus, sentido): #Essa função gira o robo para algum lado
@@ -43,7 +43,7 @@ def alinhar(c): #Essa função alinha o lego a uma cor especifica c.
         if cor.value() == c:
             m1.stop(stop_action="brake")
             m2.stop(stop_action="brake")
-            m1.run_forever(speed_sp=-150)
+            #m1.run_forever(speed_sp=-150)
             m2.run_forever(speed_sp=150)
             while cor2.value() != c:
                 pass
@@ -53,11 +53,12 @@ def alinhar(c): #Essa função alinha o lego a uma cor especifica c.
             m1.stop(stop_action="brake")
             m2.stop(stop_action="brake")
             m1.run_forever(speed_sp=150)
-            m2.run_forever(speed_sp=-150)
+            #m2.run_forever(speed_sp=-150)
             while cor.value() != c:
                 pass
             return 0
-
+    m1.stop(stop_action="brake")
+    m2.stop(stop_action="brake")
     m1.run_timed(time_sp=100, speed_sp=-200)
     m2.run_timed(time_sp=100, speed_sp=-200)
     time.sleep(0.5)
@@ -79,10 +80,11 @@ m2.run_forever(speed_sp=300)
 while True:
     if cor.value() == 1 or cor2.value() == 1:
         alinhar(1)
+        print("Achou preto")
+        time.sleep(4)
         giraRobo(90,True)
         m1.run_forever(speed_sp=300)
         m2.run_forever(speed_sp=300)
-        print("Achou preto")
 
     '''elif cor.value() != 6 or cor2.value() != 6:
         if cor.value() == 6:
