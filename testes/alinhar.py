@@ -101,23 +101,24 @@ while us.value() > 500 and cont <= 180:
 #Essa função tenta dar um início ao robo, visto que o mesmo inicia em posição aleatoria, porém nao está
 #funcionando corretamente
 
-#m1.run_forever(speed_sp=300)
-#m2.run_forever(speed_sp=300)
+m1.run_forever(speed_sp=300)
+m2.run_forever(speed_sp=300)
 tdetempo = time.time()
 while True:
-    global tdetempo
+    '''global tdetempo
     if (time.time() - tdetempo) > 0.6:
         print("US: %d" %us.value())
         tdetempo = time.time()
     '''
     if cor.value() == 1 or cor2.value() == 1:
         alinhar(1)
-        print("Achou preto")
-        #giraRobo(90,True)
-        m1.run_forever(speed_sp=300)
-        m2.run_forever(speed_sp=300)
-        time.sleep(1.5)
-    '''
+        m1.stop(stop_action="brake")
+        m2.stop(stop_action="brake")
+        m1.run_to_rel_pos(position_sp=-100,speed_sp=500,stop_action="brake")
+        m2.run_to_rel_pos(position_sp=-100,speed_sp=500,stop_action="brake")
+        giraRobo(90,True)
+        time.sleep(7)
+
     '''elif cor.value() != 6 or cor2.value() != 6:
         if cor.value() == 6:
             alinhar(cor2.value())
@@ -130,4 +131,5 @@ while True:
     '''
 #Esse ultimo elif deveria ajustar o robo a qualquer cor diferente de branco, porém ele nao está identificando o
 #branco corretamente
+
 
