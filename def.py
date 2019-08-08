@@ -162,38 +162,20 @@ def blakeLine(self): #Walk the black line to learning colors.
                 print("color z: %d" %z)
     return [xyz]
 
-def odometry(self)
-    R = 7.5
-    r = 2.85
-    C = 2*math.pi*R #Robot
-    c = 2*math.pi*r #Wheel
-    rate = C/c
-    return rate 
+def odometry()
+    R = float(6.5) #Robot
+    r = float(2.65) #Wheels
+    C = float(2*math.pi*R)
+    c = float(2*math.pi*r)
+    razaoRobo = C/c
+    return razaoRobo
 
-def odometrySensor(self)
-    R = 12.5
-    r = 2.85
-    C = 2*math.pi*R #Robot
-    c = 2*math.pi*r #Wheel
-    rate = C/c
-    return rate
-
-def rotateRobot(degrees,way): #Rotate the robot with degree change.
-    odometry()
+def rotateRobot(degrees,way,speed)
     if way:
-        m1.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
-        m2.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
+        m1.run_to_rel_pos(position_sp=-(razaoRobo*degrees),speed_sp=speed)
+        m2.run_to_rel_pos(position_sp=(razaoRobo*degrees),speed_sp=speed)
     else:
-        m1.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
-        m2.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
-    time.sleep(2)
+        m1.run_to_rel_pos(position_sp=(razaoRobo*degrees),speed_sp=speed)
+        m2.run_to_rel_pos(position_sp=-(razaoRobo*degrees),speed_sp=speed)
+    
 
-def rotateSensor(degrees,way): #Rotate the robot with degree sensor.
-    odometrySensor()
-    if way:
-        m1.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
-        m2.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
-    else:
-        m1.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
-        m2.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
-    time.sleep(2)
