@@ -21,13 +21,12 @@ ir.mode = 'IR-PROX'
 us = UltrasonicSensor('in3') #Ultrasonic_Sensor
 us.mode = 'US-DIST-CM'
 
-R = #robotOdometry
-r = #wheelsOdometry
 
-def rgbtohsv(r, g, b): #RGB to HSV
-    r = float(r/255.0)
-    g = float(g/255.0)
-    b = float(b/255.0)
+
+def rgbtohsv(rgb): #RGB to HSV
+    r = float(rgb[0]/255.0)
+    g = float(rgb[1]/255.0)
+    b = float(rgb[2]/255.0)
 
     mx = max(r, g, b)
     mn = min(r, g, b)
@@ -50,12 +49,12 @@ def rgbtohsv(r, g, b): #RGB to HSV
     s = round(s, 2)
     v = round(v, 2)
 
-    return h, s, v
+    return [hsv]
 
-def hsvtorgb(h, s, v): #HSV to RGB
-    h = float(h)
-    s = float(s/100)
-    v = float(v/100)
+def hsvtorgb(hsv): #HSV to RGB
+    h = float(hsv[0])
+    s = float(hsv[1]/100)
+    v = float(hsv[2]/100)
 
     hi = h/60
     c = float(v*s)
@@ -79,10 +78,13 @@ def hsvtorgb(h, s, v): #HSV to RGB
     g = round((gi+m))
     b = round((bi+m))
 
-    return r, g, b
+    return [rgb]
 
-def rgbtohsl(r, g, b):  #RGB to HSL
-    r, g, b = r/255.0, g/255.0, b/255.0
+def rgbtohsl(rgb):  #RGB to HSL
+    r = float(rgb[0]/255.0)
+    g = float(rgb[1]/255.0)
+    b = float(rgb[2]/255.0)
+
     mx = max(r, g, b)
     mn = min(r, g, b)
     dif = mx - mn:
@@ -107,12 +109,12 @@ def rgbtohsl(r, g, b):  #RGB to HSL
     s = round(s,2)
     l = round(s,2)
 
-    return h, s, l
+    return [hsl]
 
-def hsltorgb(h, s, l): #HSL to RGB
-    h = float(h)
-    s = float(s/100)
-    l = float(l/100)
+def hsltorgb(hsl): #HSL to RGB
+    h = float(hsl[0])
+    s = float(hsl[1]/100)
+    l = float(hsl[2]/100)
 
     c = float((1 - abs(2*l -1))*s)
     hi = float(h/60)
@@ -136,7 +138,7 @@ def hsltorgb(h, s, l): #HSL to RGB
     g = round((gi+m))
     b = round((bi+m))
     
-    return r, g, b
+    return [rgb]
 
 def blakeLine(self): #Walk the black line to learning colors.
     x, y, z = -1, -1, -1
@@ -158,16 +160,36 @@ def blakeLine(self): #Walk the black line to learning colors.
             elif cor2.value() != y and y != -1 and z == -1:
                 z = cor2.value()
                 print("color z: %d" %z)
-    return x, y, z
+    return [xyz]
 
-def odometry(self, R, r)
+def odometry(self)
+    R = 7.5
+    r = 2.85
     C = 2*math.pi*R #Robot
     c = 2*math.pi*r #Wheel
     rate = C/c
     return rate 
 
-def rotateRobot(degrees, way): #Rotate the robot with degree change.
+def odometrySensor(self)
+    R = 12.5
+    r = 2.85
+    C = 2*math.pi*R #Robot
+    c = 2*math.pi*r #Wheel
+    rate = C/c
+    return rate
+
+def rotateRobot(degrees,way): #Rotate the robot with degree change.
     odometry()
+    if way:
+        m1.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
+        m2.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
+    else:
+        m1.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
+        m2.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
+    time.sleep(2)
+
+def rotateSensor(degrees,way): #Rotate the robot with degree sensor.
+    odometrySensor()
     if way:
         m1.run_to_rel_pos(position_sp=-(rate*degrees),speed_sp=180,stop_action="brake")
         m2.run_to_rel_pos(position_sp=(rate*degrees),speed_sp=180,stop_action="brake")
