@@ -5,7 +5,7 @@ import time
 import math
 
 #Motors
-m1 = LargeMotor('OutA') #Left_Motor
+m1 = LargeMotor('OutD') #Left_Motor
 m2 = LargeMotor('OutC') #Right_Motor
 m3 = MediumMotor('OutB') #Claw_Motor
 
