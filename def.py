@@ -5,9 +5,9 @@ import time
 import math
 
 #Motors
-m1 = LargeMotor('OutD') #Left_Motor
+m1 = LargeMotor('OutA') #Left_Motor
 m2 = LargeMotor('OutC') #Right_Motor
-m3 = MediumMotor('OutA') #Claw_Motor
+m3 = MediumMotor('OutB') #Claw_Motor
 
 #ColorSensors
 cor = ColorSensor('in2') #Left_ColorSensor
@@ -18,8 +18,8 @@ cor2.mode = 'COL-COLOR'
 #Sensors 
 ir = InfraredSensor('in1') #Infrared_Sensor
 ir.mode = 'IR-PROX'
-us = UltrasonicSensor('in3') #Ultrasonic_Sensor
-us.mode = 'US-DIST-CM'
+#us = UltrasonicSensor('in3') #Ultrasonic_Sensor
+#us.mode = 'US-DIST-CM'
 
 
 
@@ -87,7 +87,7 @@ def rgbtohsl(rgb):  #RGB to HSL
 
     mx = max(r, g, b)
     mn = min(r, g, b)
-    dif = mx - mn:
+    dif = mx - mn
     if mx == mn:
         h = 0
     elif mx == r:
@@ -97,11 +97,11 @@ def rgbtohsl(rgb):  #RGB to HSL
     elif mx == b:
         h = float(60 * ((r-g)/dif) + 240) % 360
     l = float(100*((mx + mn) / 2))
-    if mx == 0 
+    if mx == 0:
         s = 0
-    elif mn == 1
+    elif mn == 1:
         s = 0
-    else
+    else:
         mod = (2*l-1)
         s = float(100*((2*mx - 2*l)/1-(abs(mod))))
     
@@ -140,7 +140,7 @@ def hsltorgb(hsl): #HSL to RGB
     
     return [rgb]
 
-def blakeLine(self): #Walk the black line to learning colors.
+def blakeLine(): #Walk the black line to learning colors.
     x, y, z = -1, -1, -1
 
     while True:
@@ -162,20 +162,12 @@ def blakeLine(self): #Walk the black line to learning colors.
                 print("color z: %d" %z)
     return [xyz]
 
-def odometry()
-    R = float(6.5) #Robot
-    r = float(2.65) #Wheels
-    C = float(2*math.pi*R)
-    c = float(2*math.pi*r)
-    razaoRobo = C/c
-    return razaoRobo
-
-def rotateRobot(degrees,way,speed)
+def rotateRobot(degrees, way): #Odometry
+    razaoRobo = (2 * math.pi * 6.65) / (2 * math.pi * 2.75)
     if way:
-        m1.run_to_rel_pos(position_sp=-(razaoRobo*degrees),speed_sp=speed)
-        m2.run_to_rel_pos(position_sp=(razaoRobo*degrees),speed_sp=speed)
+        m1.run_to_rel_pos(position_sp=razaoRobo*degrees, speed_sp=-200, stop_action="brake")
+        m2.run_to_rel_pos(position_sp=-(razaoRobo*degrees), speed_sp=200, stop_action="brake")
     else:
-        m1.run_to_rel_pos(position_sp=(razaoRobo*degrees),speed_sp=speed)
-        m2.run_to_rel_pos(position_sp=-(razaoRobo*degrees),speed_sp=speed)
+        m1.run_to_rel_pos(position_sp=-(razaoRobo*degrees), speed_sp=200, stop_action="brake")
+        m2.run_to_rel_pos(position_sp=razaoRobo*degrees, speed_sp=-200, stop_action="brake")
     
-
